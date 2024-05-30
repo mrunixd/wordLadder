@@ -1,10 +1,21 @@
 #include "word_ladder.h"
 
-auto word_ladder::read_lexicon(const std::string &path) -> std::unordered_set<std::string> {
-	(void) path;
-	// remove this line once implemented
+#include <fstream>
+#include <iostream>
+#include <string>
 
-	return {};
+auto word_ladder::read_lexicon(const std::string &path) -> std::unordered_set<std::string> {
+	std::unordered_set<std::string> set;
+	std::ifstream file (path);
+	std::string buffer;
+
+	if (file.is_open()) {
+		while (std::getline(file, buffer)) {
+			set.insert(buffer);
+		}
+	}
+
+	return set;
 }
 
 

@@ -3,7 +3,8 @@
 #include <catch2/catch.hpp>
 
 TEST_CASE("word_ladder::read_lexicon works as expected") {
-	REQUIRE_FALSE("fill this in with a proper test");
+	std::unordered_set<std::string> test_set = {"Hello", "My", "Name", "Is", "Manan"};
+	CHECK(test_set == word_ladder::read_lexicon("/home/manan/COMP6771/ass1/src/test.txt"));
 }
 
 TEST_CASE("at -> it") {
