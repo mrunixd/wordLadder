@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <string>
 #include <queue>
 
@@ -24,7 +25,7 @@ auto word_ladder::read_lexicon(const std::string &path) -> std::unordered_set<st
 auto reduce_set(std::unordered_set<std::string> &lexicon, const std::string &from) {
 	size_t size = from.size();
 	std::erase_if(lexicon, [size](auto& x) {
-		return x.size() == size;
+		return x.size() != size;
 	});
 
 	// any other improvements
@@ -50,36 +51,39 @@ auto word_ladder::generate(
 	const std::unordered_set<std::string> &lexicon
 ) -> std::vector<std::vector<std::string>> {
 	std::vector<std::vector<std::string>> results;
-	std::unordered_set<std::string> copy_lexicon = lexicon;
-	reduce_set(copy_lexicon, from);
 
-	std::queue<std::vector<std::string>> q;
-	q.push({from});
+    std::unordered_set<std::string> copy_lexicon = lexicon;
+    reduce_set(copy_lexicon, from);
 
-	bool found = false;
-	while (!q.empty() && !found) {
-		size_t level_size = q.size();
+    std::queue<std::string> q;
+    q.push(from);
 
-		for (size_t i = 0; i < level_size; i++) {
-			auto path = q.front();
-			q.pop();
-			std::string curr = path.back();
+    std::unordered_set<std::string> visited;
+    std::map<std::string, std::string> parent; // To track multiple parents
+    parent[from] = " ";
 
-			std::vector<std::string> neighbours = generate_neighbours(curr, lexicon);
-			for (auto &neighbour : neighbours) {
-				if (neighbour == to) {
-					found = true;	
-					std::vector<std::string> new_path = path;
-					new_path.push_back(neighbour);
-					results.push_back(new_path);
-				} else {
-					std::vector<std::string> new_path = path;
-					new_path.push_back(neighbour);
-					q.push(new_path);
-				}
-				copy_lexicon.erase(neighbour);
-			}
-		}
-	}
-	return results;
+    bool found = false;
+
+    while (!q.empty() && !found) {
+        auto curr = q.front();
+        q.pop();
+
+        if (curr == to) {
+            // do smth
+        }
+
+        auto neighbours = generate_neighbours(curr, copy_lexicon);
+        for (auto neighbour : neighbours) {
+            if (!visited.contains(neighbour)) {
+                q.push(neighbour);
+                visited.insert(neighbour);
+                parent[neighbour] = curr;
+            }
+        }
+    }
+
+    // include backtracking
+
+
+    return results;
 }
