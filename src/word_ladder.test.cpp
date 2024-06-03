@@ -58,9 +58,10 @@ TEST_CASE("work -> play") {
 
 	auto const expected = std::vector<std::vector<std::string>>{
 		{"work", "fork", "form", "foam", "flam", "flay", "play"},
-		{"work", "pork", "perk", "peak", "pean", "plan", "play"},
-		{"work", "worm", "form", "foam", "flam", "flay", "play"}
+		{"work", "worm", "form", "foam", "flam", "flay", "play"},
+		{"work", "pork", "perk", "peak", "pean", "plan", "play"}
 	};
 
 	auto const ladder = word_ladder::generate("work", "play", lexicon);
+	CHECK(ladder == expected);
 }
