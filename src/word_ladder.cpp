@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <queue>
+#include <algorithm>
 
 auto word_ladder::read_lexicon(const std::string &path) -> std::unordered_set<std::string> {
 	std::unordered_set<std::string> set;
@@ -45,6 +46,23 @@ std::vector<std::string> generate_neighbours(const std::string &word, const std:
 	return neighbours;
 }
 
+void backtrack(const std::string &node, const std::string &start,
+               const std::map<std::string, std::vector<std::string>> &parent,
+               std::vector<std::string> &path, std::vector<std::vector<std::string>> &results) {
+    if (node == start) {
+        std::vector<std::string> temp = path;
+        temp.push_back(start);
+        std::reverse(temp.begin(), temp.end());
+        results.push_back(temp);
+        return;
+    }
+    path.push_back(node);
+    for (const auto &p : parent.at(node)) {
+        backtrack(p, start, parent, path, results);
+    }
+    path.pop_back();
+}
+
 auto word_ladder::generate(
 	const std::string &from,
 	const std::string &to,
@@ -59,31 +77,43 @@ auto word_ladder::generate(
     q.push(from);
 
     std::unordered_set<std::string> visited;
-    std::map<std::string, std::string> parent; // To track multiple parents
-    parent[from] = " ";
+    std::map<std::string, std::vector<std::string>> parent; // To track multiple parents
+    parent[from] = {};
 
     bool found = false;
 
     while (!q.empty() && !found) {
-        auto curr = q.front();
-        q.pop();
+		auto level_size = q.size();
+		std::unordered_set<std::string> level_visited;
 
-        if (curr == to) {
-            // do smth
-        }
+		for (size_t i = 0; i < level_size; i++) {
+        	auto curr = q.front();
+        	q.pop();
 
-        auto neighbours = generate_neighbours(curr, copy_lexicon);
-        for (auto neighbour : neighbours) {
-            if (!visited.contains(neighbour)) {
-                q.push(neighbour);
-                visited.insert(neighbour);
-                parent[neighbour] = curr;
-            }
-        }
+			if (curr == to) {
+				found = true;
+			}
+
+	        auto neighbours = generate_neighbours(curr, copy_lexicon);
+			for (auto neighbour : neighbours) {
+				if (!visited.contains(neighbour)) {
+                    if (!level_visited.contains(neighbour)) {
+                        q.push(neighbour);
+                        level_visited.insert(neighbour);
+                        parent[neighbour] = {curr};
+                    } else {
+                        parent[neighbour].push_back(curr);
+                    }
+                }
+			}
+		}
+		visited.insert(level_visited.begin(), level_visited.end());
     }
 
-    // include backtracking
-
+	if (found) {
+		std::vector<std::string> path;
+		backtrack(to, from, parent, path, results);
+	}
 
     return results;
 }
