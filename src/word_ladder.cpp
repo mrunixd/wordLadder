@@ -3,7 +3,6 @@
 
 #include <cstddef>
 #include <fstream>
-#include <iostream>
 #include <map>
 #include <string>
 #include <queue>
@@ -28,8 +27,6 @@ auto reduce_set(std::unordered_set<std::string> &lexicon, const std::string &fro
 	std::erase_if(lexicon, [size](auto& x) {
 		return x.size() != size;
 	});
-
-	// any other improvements
 }
 
 std::vector<std::string> generate_neighbours(const std::string &word, const std::unordered_set<std::string> &lexicon) {
