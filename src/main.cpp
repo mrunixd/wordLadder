@@ -1,5 +1,6 @@
 #include "word_ladder.h"
 
+#include <ctime>
 #include <iostream>
 
 // Please note: it's not good practice to test your code via a main function that does
@@ -9,6 +10,5 @@
 
 auto main() -> int {
 	auto const english_lexicon = word_ladder::read_lexicon("./english.txt");
-	auto const ladders = word_ladder::generate("fly", "sky", english_lexicon);
-	// debug here
+	auto const ladders = word_ladder::generate("atlases", "cabaret", english_lexicon);
 }
