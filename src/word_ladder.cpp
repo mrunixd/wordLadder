@@ -60,16 +60,7 @@ void backtrack(const std::string &node, const std::string &start,
     path.pop_back();
 }
 
-auto word_ladder::generate(
-	const std::string &from,
-	const std::string &to,
-	const std::unordered_set<std::string> &lexicon
-) -> std::vector<std::vector<std::string>> {
-	std::vector<std::vector<std::string>> results;
-
-    auto copy_lexicon = lexicon;
-    reduce_set(copy_lexicon, from);
-
+std::map<std::string, std::vector<std::string>> bfs(const std::string &from, const std::string &to, const std::unordered_set<std::string> copy_lexicon) {
     auto q = std::queue<std::string>();
     q.push(from);
 
@@ -79,7 +70,7 @@ auto word_ladder::generate(
 
     auto found = false;
 
-    while (!q.empty() && !found) {
+    while (not q.empty() and !found) {
 		auto level_size = q.size();
 		auto level_visited = std::unordered_set<std::string>();
 
@@ -107,7 +98,25 @@ auto word_ladder::generate(
 		visited.insert(level_visited.begin(), level_visited.end());
     }
 
-	if (found) {
+	if (not found) {
+		return std::map<std::string, std::vector<std::string>>();
+	}
+
+	return parent;
+}
+
+auto word_ladder::generate(
+	const std::string &from,
+	const std::string &to,
+	const std::unordered_set<std::string> &lexicon
+) -> std::vector<std::vector<std::string>> {
+	std::vector<std::vector<std::string>> results;
+
+    auto copy_lexicon = lexicon;
+    reduce_set(copy_lexicon, from);
+
+	auto parent = bfs(from, to, copy_lexicon);
+	if (parent.size() != 0) {
 		auto path = std::vector<std::string>();
 		backtrack(to, from, parent, path, results);
 	}
