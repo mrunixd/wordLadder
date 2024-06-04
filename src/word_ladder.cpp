@@ -120,6 +120,7 @@ auto word_ladder::generate(
 		auto path = std::vector<std::string>();
 		backtrack(to, from, parent, path, results);
 	}
-
+	
+	std::sort(results.begin(), results.end());
     return results;
 }
