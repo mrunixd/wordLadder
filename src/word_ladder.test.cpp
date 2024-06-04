@@ -65,3 +65,17 @@ TEST_CASE("work -> play") {
 	auto const ladder = word_ladder::generate("work", "play", lexicon);
 	CHECK(ladder == expected);
 }
+
+TEST_CASE("cut -> try, no result and different word length") {
+	auto const lexicon = std::unordered_set<std::string>{
+		"cut",
+		"try",
+		"told",
+	};
+
+	auto const expected = std::vector<std::vector<std::string>>{};
+
+	auto const ladders = word_ladder::generate("cut", "try", lexicon);
+
+	CHECK(ladders == expected);
+}
