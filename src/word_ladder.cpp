@@ -9,9 +9,9 @@
 #include <algorithm>
 
 auto word_ladder::read_lexicon(const std::string &path) -> std::unordered_set<std::string> {
-	std::unordered_set<std::string> set;
-	std::ifstream file (path);
-	std::string buffer;
+	auto set = std::unordered_set<std::string>();
+	auto file = std::ifstream(path);
+	auto buffer = std::string();
 
 	if (file.is_open()) {
 		while (std::getline(file, buffer)) {
@@ -23,16 +23,16 @@ auto word_ladder::read_lexicon(const std::string &path) -> std::unordered_set<st
 }
 
 auto reduce_set(std::unordered_set<std::string> &lexicon, const std::string &from) {
-	size_t size = from.size();
+	auto size = from.size();
 	std::erase_if(lexicon, [size](auto& x) {
 		return x.size() != size;
 	});
 }
 
 std::vector<std::string> generate_neighbours(const std::string &word, const std::unordered_set<std::string> &lexicon) {
-	std::vector<std::string> neighbours;
+	auto neighbours = std::vector<std::string>();
 	for (size_t i = 0; i < word.size(); i++) {
-		std::string temp = word;
+		auto temp = word;
 		for (char c = 'a'; c <= 'z'; ++c) {
 			temp[i] = c;
 			if (lexicon.find(temp) != lexicon.end()) {
@@ -47,7 +47,7 @@ void backtrack(const std::string &node, const std::string &start,
                const std::map<std::string, std::vector<std::string>> &parent,
                std::vector<std::string> &path, std::vector<std::vector<std::string>> &results) {
     if (node == start) {
-        std::vector<std::string> temp = path;
+        auto temp = path;
         temp.push_back(start);
         std::reverse(temp.begin(), temp.end());
         results.push_back(temp);
@@ -67,21 +67,21 @@ auto word_ladder::generate(
 ) -> std::vector<std::vector<std::string>> {
 	std::vector<std::vector<std::string>> results;
 
-    std::unordered_set<std::string> copy_lexicon = lexicon;
+    auto copy_lexicon = lexicon;
     reduce_set(copy_lexicon, from);
 
-    std::queue<std::string> q;
+    auto q = std::queue<std::string>();
     q.push(from);
 
-    std::unordered_set<std::string> visited;
-    std::map<std::string, std::vector<std::string>> parent; // To track multiple parents
+    auto visited = std::unordered_set<std::string>();
+    auto parent = std::map<std::string, std::vector<std::string>>();
     parent[from] = {};
 
-    bool found = false;
+    auto found = false;
 
     while (!q.empty() && !found) {
 		auto level_size = q.size();
-		std::unordered_set<std::string> level_visited;
+		auto level_visited = std::unordered_set<std::string>();
 
 		for (size_t i = 0; i < level_size; i++) {
         	auto curr = q.front();
@@ -108,7 +108,7 @@ auto word_ladder::generate(
     }
 
 	if (found) {
-		std::vector<std::string> path;
+		auto path = std::vector<std::string>();
 		backtrack(to, from, parent, path, results);
 	}
 
