@@ -33,7 +33,7 @@ std::vector<std::string> generate_neighbours(const std::string& word, const std:
 		auto temp = word;
 		for (char c = 'a'; c <= 'z'; ++c) {
 			temp[i] = c;
-			if (lexicon.find(temp) != lexicon.end()) {
+			if (lexicon.contains(temp)) {
 				neighbours.push_back(temp);
 			}
 		}
@@ -61,7 +61,7 @@ void backtrack(const std::string& node,
 }
 
 std::map<std::string, std::vector<std::string>>
-bfs(const std::string& from, const std::string& to, const std::unordered_set<std::string> copy_lexicon) {
+bfs(const std::string& from, const std::string& to, const std::unordered_set<std::string>& copy_lexicon) {
 	auto q = std::queue<std::string>();
 	q.push(from);
 
