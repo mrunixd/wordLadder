@@ -49,7 +49,7 @@ void backtrack(const std::string& node,
 	if (node == start) {
 		auto temp = path;
 		temp.push_back(start);
-		std::reverse(temp.begin(), temp.end());
+		std::ranges::reverse(temp.begin(), temp.end());
 		results.push_back(temp);
 		return;
 	}
@@ -84,7 +84,7 @@ bfs(const std::string& from, const std::string& to, const std::unordered_set<std
 			}
 
 			auto neighbours = generate_neighbours(curr, copy_lexicon);
-			for (auto neighbour : neighbours) {
+			for (auto const &neighbour : neighbours) {
 				if (!visited.contains(neighbour)) {
 					if (!level_visited.contains(neighbour)) {
 						q.push(neighbour);
@@ -101,7 +101,7 @@ bfs(const std::string& from, const std::string& to, const std::unordered_set<std
 	}
 
 	if (not found) {
-		return std::map<std::string, std::vector<std::string>>();
+		return {};
 	}
 
 	return parent;
@@ -115,11 +115,11 @@ auto word_ladder::generate(const std::string& from, const std::string& to, const
 	reduce_set(copy_lexicon, from);
 
 	auto parent = bfs(from, to, copy_lexicon);
-	if (parent.size() != 0) {
+	if (!parent.empty()) {
 		auto path = std::vector<std::string>();
 		backtrack(to, from, parent, path, results);
 	}
 
-	std::sort(results.begin(), results.end());
+	std::ranges::sort(results.begin(), results.end());
 	return results;
 }
