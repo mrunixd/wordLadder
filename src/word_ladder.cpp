@@ -33,7 +33,7 @@ std::vector<std::string> generate_neighbours(const std::string& word, const std:
 		auto temp = word;
 		for (char c = 'a'; c <= 'z'; ++c) {
 			temp[i] = c;
-			if (lexicon.contains(temp)) {
+			if (temp != word && lexicon.contains(temp)) {
 				neighbours.push_back(temp);
 			}
 		}
