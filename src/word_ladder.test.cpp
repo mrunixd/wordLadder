@@ -28,7 +28,7 @@ TEST_CASE("read_lexicon works as expected") {
 	remove(file_name);
 }
 
-TEST_CASE("at -> it") {
+TEST_CASE("at -> it, one possibility, limited") {
 	auto const lexicon = std::unordered_set<std::string>{"at", "it"};
 
 	const auto expected = std::vector<std::vector<std::string>>{{"at", "it"}};
@@ -38,7 +38,7 @@ TEST_CASE("at -> it") {
 	CHECK(ladders == expected);
 }
 
-TEST_CASE("fold -> mole") {
+TEST_CASE("fold -> mole, one possibility, more words") {
 	auto const lexicon = std::unordered_set<std::string>{"fold", "mold", "told", "mole"};
 
 	auto const expected = std::vector<std::vector<std::string>>{{"fold", "mold", "mole"}};
@@ -47,7 +47,7 @@ TEST_CASE("fold -> mole") {
 	CHECK(ladders == expected);
 }
 
-TEST_CASE("work -> play") {
+TEST_CASE("work -> play, many possibilities more words") {
 	auto const lexicon = std::unordered_set<std::string>{"work", "fork", "form", "foam", "flam", "flay", "play", "pork",
 	                                                     "perk", "peak", "pean", "plan", "worm", "peat", "plat", "porn",
 	                                                     "pirn", "pert", "pian", "port", "word", "wood", "pood", "plod",

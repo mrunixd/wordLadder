@@ -22,12 +22,13 @@ auto word_ladder::read_lexicon(const std::string& path) -> std::unordered_set<st
 	return set;
 }
 
-auto reduce_set(std::unordered_set<std::string>& lexicon, const std::string& from) {
+auto reduce_set(std::unordered_set<std::string>& lexicon, const std::string& from) -> void {
 	auto size = from.size();
 	std::erase_if(lexicon, [size](auto& x) { return x.size() != size; });
 }
 
-std::vector<std::string> generate_neighbours(const std::string& word, const std::unordered_set<std::string>& lexicon) {
+auto generate_neighbours(const std::string& word, const std::unordered_set<std::string>& lexicon)
+    -> std::vector<std::string> {
 	auto neighbours = std::vector<std::string>();
 	for (size_t i = 0; i < word.size(); i++) {
 		auto temp = word;
@@ -60,8 +61,8 @@ void backtrack(const std::string& node,
 	path.pop_back();
 }
 
-std::map<std::string, std::vector<std::string>>
-bfs(const std::string& from, const std::string& to, const std::unordered_set<std::string>& copy_lexicon) {
+auto bfs(const std::string& from, const std::string& to, const std::unordered_set<std::string>& copy_lexicon)
+    -> std::map<std::string, std::vector<std::string>> {
 	auto q = std::queue<std::string>();
 	q.push(from);
 
@@ -84,7 +85,7 @@ bfs(const std::string& from, const std::string& to, const std::unordered_set<std
 			}
 
 			auto neighbours = generate_neighbours(curr, copy_lexicon);
-			for (auto const &neighbour : neighbours) {
+			for (auto const& neighbour : neighbours) {
 				if (!visited.contains(neighbour)) {
 					if (!level_visited.contains(neighbour)) {
 						q.push(neighbour);
