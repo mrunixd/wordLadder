@@ -5,3 +5,4 @@ Testing/
 .clangd/
 .vs/
 .DS_Store
+CMakeFiles

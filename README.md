@@ -4,7 +4,9 @@
 
 ## Change Log
 
--N/A
+* 30/05: Due date fixed up; typo when expressing debug/release build modes fixed up; a few other typos; clarification of number of lines committed
+* 31/05: Few more typo fixes; including the benchmark_exe; clarifications on squashing when working on other branches.
+* 09/06: Fixed command to compile in Release mode
 
 [toc]
 
@@ -34,7 +36,6 @@ Leveraging `std::vector`, `std::queue`, and `std::unordered_set` are critical fo
 word ladder builder. A word ladder is a connection from one word to another, formed by changing one
 letter at a time, with the constraint that each transformation yields a new valid word. For example,
 here is a word ladder connecting "code" to "data".
-
 
 ```txt
 code -> cade -> cate -> date -> data
@@ -118,25 +119,24 @@ vectors via copy construction (e.g. `auto word_ladder_clone = word_ladder;`) and
 lexicographical (alphabetical) order. Thus, the return type for your word ladder generator will be
 `std::vector<std::vector<std::string>>`.**
 
-
 ## 3. The Task
 
 This generator might seem like it’s a panacea, but it still benefits from a step-by-step development
 plan to keep things moving along.
 
-* **Task 1** --- *Familiarise yourself with the libraries available.* You don’t need to deep-dive,
+* **Task 1** --- _Familiarise yourself with the libraries available._ You don’t need to deep-dive,
 but it would be a smart idea to read up on `std::vector`, `std::queue`, and `std::unordered_set`,
 from the standard library. You shouldn’t worry about their implementation details: focus on the interfaces, and how you use them in practice.
-* **Task 2** --- *Test design.* We’ve provided you with a very simple test case to show you how to
+* **Task 2** --- _Test design._ We’ve provided you with a very simple test case to show you how to
 use the test library. You should add more `TEST_CASE`s underneath, so you have a suite of checks to
 make sure you catch any logic errors in your generator. We adopt Google’s Beyoncé rule in this
 class: “if you liked it, you should have put a test on it”. Test words that are short (one or two
 letters) and test words that are longer.
-* **Task 3** --- *Design your algorithm.* Be sure you understand the breadth-first search algorithm
+* **Task 3** --- _Design your algorithm._ Be sure you understand the breadth-first search algorithm
 on paper, and what types you will need to use.
-* **Task 4** --- *Lexicon handling.* Set up an `std::unordered_set` object with the large lexicon,
+* **Task 4** --- _Lexicon handling._ Set up an `std::unordered_set` object with the large lexicon,
 read from a data file. There’s a utility function called `word_ladder::read_lexicon` that you will also need to implement. If you find yourself struggling to write `word_ladder::generate()`, it may be helpful to take a break by implementing an easier function.
-* **Task 5** --- *Write `generate`.* With your design in hand from Task 3, you can rough out an implementation of `generate()` and progressively improve it as you understand the problem and optimise more and more.
+* **Task 5** --- _Write `generate`._ With your design in hand from Task 3, you can rough out an implementation of `generate()` and progressively improve it as you understand the problem and optimise more and more.
 
 ### 3.1. Assumptions
 
@@ -176,13 +176,13 @@ $ git clone gitlab@gitlab.cse.unsw.edu.au:COMP6771/24T2/students/z5555555/ass1.g
 (Note: Replace z5555555 with your zid)
 
 Most of the files here will be quite familiar to you. But there are key files in the `src` directory:
- * `english.txt`: The file where the lexicon is.
- * `main.cpp`: The file where a main function exists for debugging.
- * `word_ladder.cpp`: The library file that has the word ladder generator function.
- * `word_ladder.h`: The header file for the word ladder generator library file.
- * `word_ladder.h`: The header file for the word ladder generator library file.
- * `word_ladder_test.cpp`: The test file where you can write tests to help debug your code.
- * `word_ladder_benchmark.cpp`: A test file to help you understand how you're performing with the hardest test.
+
+* `english.txt`: The file where the lexicon is.
+* `main.cpp`: The file where a main function exists for debugging.
+* `word_ladder.cpp`: The library file that has the word ladder generator function.
+* `word_ladder.h`: The header file for the word ladder generator library file.
+* `word_ladder_test.cpp`: The test file where you can write tests to help debug your code.
+* `word_ladder_benchmark.cpp`: A test file to help you understand how you're performing with the hardest test.
 
 ### 4.1. Setup
 
@@ -191,6 +191,7 @@ Remember, since we just cloned, we will need to run `cmake -B build` to configur
 ### 4.2. Running the tests
 
 Now that we've configured cmake, we can navigate to `build` and run:
+
 ```sh
 $ make
 $ ctest
@@ -217,19 +218,19 @@ test, you may still get the marks, but it's just something we can't guarantee.
 
 Please note: This benchmark test is VERY difficult. If your code takes an hour to run this test that's
 not something that should make you panic. It's quite easy to fall in the time limit for most of the
-tests. Don't stress and just make sure earlier tests fall in the 15 second time limit on CSE
+tests. Don't stress and just make sure earlier tests fall in the 12 second time limit on CSE
 machines.
 
 To measure your performance:
 
-1. Make sure you change CMake to build in `[Release]` mode by running `cmake -DCMAKE_BUILD_TYPE=Debug` in the project directory.
+1. Make sure you change CMake to build in `[Release]` mode by running `cmake -DCMAKE_BUILD_TYPE=Release -B build` in the project directory.
    This will remove debug symbols and other things, which will mean your code runs faster, but is
    near impossible to debug for mere mortals. This is usually what is done when you're finished
    developing and ready for release.
 
-2. In the `build` folder, build with `make word_ladder_benchmark` and run `time ./word_ladder_benchmark` to run the benchmark. It
+2. In the `build` folder, build with `make word_ladder_benchmark_exe` and run `time ./word_ladder_benchmark` to run the benchmark. It
    will output something like this below. The time you should measure yourself against is the "user"
-   time. If this is under 15 seconds then you're all good.
+   time. If this is under 12 seconds then you're all good.
 
 ```txt
 real    1m45.089s
@@ -237,7 +238,7 @@ user    1m44.497s
 sys     0m0.560s
 ```
 
-4. Once you are happy with your performance, don't forget to change CMake back to `[Debug]` by running `cmake -DCMAKE_BUILD_TYPE=Debug` in the project directory. This will add back debug symbols in so that you can more effectively debug your code.
+3. Once you are happy with your performance, don't forget to change CMake back to `[Debug]` by running `cmake -DCMAKE_BUILD_TYPE=Debug -B build` in the project directory. This will add back debug symbols in so that you can more effectively debug your code.
 
 ### 4.5. Compiling with main.cpp
 
@@ -311,12 +312,15 @@ Please note: Significant penalties may apply if you do not comply with the 'Git 
 It's imperative that we are able to track your progress when marking.
 
 For assignment 1, there are some requirements for us to track your ongoing progress:
+
 1. You must make commits on at least 3 unique days prior to due date.
 2. All of your commits to master must successfully compile (according to the pipeline). You are given 3 exceptions.
 3. Your commits must be meaningful in description (e.g. "Continued work on loop speed")
-4. Each commit must be no longer than 50 lines of code. You are given no exceptions.
+4. Each commit include no more than 50 lines additions of code (this may differ in future assignments). You are given no exceptions.
 
-Failure to adhere to these guidelines in they're entirety may result in a mimumum 20% penalty. Any moderate or significant failure may result in a 0 grade.
+Failure to adhere to these guidelines in their entirety may result in a mimumum 20% penalty. Any moderate or significant failure may result in a 0 grade.
+
+Please note: If you choose to work on separate branches before merging into master, you must squash your commits when merging back in. This means that you can make many commits on other branches fine, it's just whatever comes back to master needs to be a single commit that compiles with no more than 50 line additions.
 
 ## 7. Originality of Work
 
@@ -331,7 +335,7 @@ Relevant scholarship authorities will be informed if students holding scholarshi
 an incident of plagiarism or other misconduct.
 
 Do not provide or show your assignment work to any other person &mdash; apart from the teaching
-staff of COMP6080.
+staff of COMP6771.
 
 If you knowingly provide or show your assignment work to another person for any reason, and work
 derived from it is submitted, you may be penalised, even if the work was submitted without your
@@ -344,7 +348,7 @@ submit is your own work (as described above).
 Note you will not be penalised if your work has the potential to be taken without your consent or
 knowledge.
 
-<b>PLEASE NOTE: We have a record of ALL previous submissions of this assignment submitted. If you find a solution from a friend, or online, we will find it and you will receive 0 for the assignment and potentially 0 for the course.</b> Trust me, at least 1 person does it every term and I encourage you not to think you'll get lucky.
+**PLEASE NOTE: We have a record of ALL previous submissions of this assignment submitted. If you find a solution from a friend, or online, we will find it and you will receive 0 for the assignment and potentially 0 for the course.** Trust me, at least 1 person does it every term and I encourage you not to think you'll get lucky.
 
 ## 8. Dryrun
 
@@ -354,10 +358,10 @@ If you want to check if you've actually not totally screwed it all up, and see i
 
 ## 9. Submission
 
-This assignment is due *Friday 21st of April, 19:59:59*.
+This assignment is due _Friday 14th of June, 19:59:59_.
 
-To submit your assignment, you must you've pushed all of your code to your gitlab master branch. You can check if you've done this properly by seeing what code is on the gitlab site on your master branch.
- 
+To submit your assignment, you must ensure you've pushed all of your code to your gitlab master branch. You can check if you've done this properly by seeing what code is on the gitlab site on your master branch.
+
 We will collect the latest work on your master branch of gitlab at the time of submission.
 
 It is your responsibiltiy to ensure that your code can run successfully on a CSE machine / VLAB when cloned fresh from Gitlab.
