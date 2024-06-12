@@ -2,9 +2,30 @@
 
 #include <catch2/catch.hpp>
 #include <unordered_set>
+#include <cstddef>
+#include <cstring>
 
 TEST_CASE("read_lexicon works as expected") {
-	CHECK(127142 == word_ladder::read_lexicon("./english.txt").size());
+	char file_name[] = "/tmp/mytempfileXXXXXX";
+	int fileDescriptor = mkstemp(file_name);
+
+	REQUIRE(fileDescriptor != -1);
+	std::string words[] = {"Hello", "My", "Name", "Is", "Manan"};
+	auto len = sizeof(words) / sizeof(words[0]);
+
+	for (size_t i = 0; i < len; i++) {
+		write(fileDescriptor, words[i].c_str(), words[i].length());
+		write(fileDescriptor, "\n", 1);
+	}
+
+	close(fileDescriptor);
+
+	auto const lexicon = word_ladder::read_lexicon(file_name);
+	for (auto word : words) {
+		CHECK(lexicon.contains(word));
+	}
+
+	remove(file_name);
 }
 
 TEST_CASE("at -> it") {
