@@ -31,11 +31,11 @@ auto generate_neighbours(const std::string& word, const std::unordered_set<std::
     -> std::vector<std::string> {
 	auto neighbours = std::vector<std::string>();
 	for (size_t i = 0; i < word.size(); i++) {
-		auto temp = word;
+		auto wordCpy = word;
 		for (char c = 'a'; c <= 'z'; ++c) {
-			temp[i] = c;
-			if (temp != word && lexicon.contains(temp)) {
-				neighbours.push_back(temp);
+			wordCpy[i] = c;
+			if (wordCpy != word && lexicon.contains(wordCpy)) {
+				neighbours.push_back(wordCpy);
 			}
 		}
 	}
@@ -48,10 +48,10 @@ void backtrack(const std::string& node,
                std::vector<std::string>& path,
                std::vector<std::vector<std::string>>& results) {
 	if (node == start) {
-		auto temp = path;
-		temp.push_back(start);
-		std::ranges::reverse(temp.begin(), temp.end());
-		results.push_back(temp);
+		auto pathCpy = path;
+		pathCpy.push_back(start);
+		std::ranges::reverse(pathCpy.begin(), pathCpy.end());
+		results.push_back(pathCpy);
 		return;
 	}
 	path.push_back(node);
@@ -72,7 +72,7 @@ auto bfs(const std::string& from, const std::string& to, const std::unordered_se
 
 	auto found = false;
 
-	while (not q.empty() and !found) {
+	while (not q.empty() and not found) {
 		auto level_size = q.size();
 		auto level_visited = std::unordered_set<std::string>();
 
@@ -116,7 +116,7 @@ auto word_ladder::generate(const std::string& from, const std::string& to, const
 	reduce_set(copy_lexicon, from);
 
 	auto parent = bfs(from, to, copy_lexicon);
-	if (!parent.empty()) {
+	if (not parent.empty()) {
 		auto path = std::vector<std::string>();
 		backtrack(to, from, parent, path, results);
 	}
