@@ -1,8 +1,8 @@
 #ifndef COMP6771_WORD_LADDER_H
 #define COMP6771_WORD_LADDER_H
 
-#include <unordered_set>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 namespace word_ladder {
