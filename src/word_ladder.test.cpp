@@ -7,9 +7,9 @@
 
 TEST_CASE("read_lexicon works as expected") {
 	char file_name[] = "/tmp/mytempfileXXXXXX";
-	int fileDescriptor = mkstemp(file_name);
-
+	auto fileDescriptor = mkstemp(file_name);
 	REQUIRE(fileDescriptor != -1);
+
 	std::string words[] = {"Hello", "My", "Name", "Is", "Manan"};
 	auto len = sizeof(words) / sizeof(words[0]);
 
