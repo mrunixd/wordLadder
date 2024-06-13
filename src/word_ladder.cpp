@@ -27,6 +27,7 @@ auto reduce_set(std::unordered_set<std::string>& lexicon, const std::string& fro
 	std::erase_if(lexicon, [size](auto& x) { return x.size() != size; });
 }
 
+// changes each letter of the word once, and checks if word is in the set
 auto generate_neighbours(const std::string& word, const std::unordered_set<std::string>& lexicon)
     -> std::vector<std::string> {
 	auto neighbours = std::vector<std::string>();
@@ -42,6 +43,7 @@ auto generate_neighbours(const std::string& word, const std::unordered_set<std::
 	return neighbours;
 }
 
+// creates the path my backtracking predecessors
 void backtrack(const std::string& node,
                const std::string& start,
                const std::map<std::string, std::vector<std::string>>& parent,
@@ -86,8 +88,8 @@ auto bfs(const std::string& from, const std::string& to, const std::unordered_se
 
 			auto neighbours = generate_neighbours(curr, copy_lexicon);
 			for (auto const& neighbour : neighbours) {
-				if (!visited.contains(neighbour)) {
-					if (!level_visited.contains(neighbour)) {
+				if (not visited.contains(neighbour)) {
+					if (not level_visited.contains(neighbour)) {
 						q.push(neighbour);
 						level_visited.insert(neighbour);
 						parent[neighbour] = {curr};
